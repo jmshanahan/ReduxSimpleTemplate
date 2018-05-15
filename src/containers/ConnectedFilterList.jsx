@@ -8,6 +8,7 @@ import { setFilter, clearFilter } from "../actions";
 //Note: The acc parameter in the code below consufed me so I wrote the code at the end and ran
 // it in jsfiddle. Then I understood what was going on.
 const mapStateToProps = (state, props) => {
+  console.log('The state is ',state)
   const categories = state.posts.reduce((acc, post) => {
     //console.log('acc is ',acc);
     if (!acc.includes(post.category)) {
