@@ -3,6 +3,7 @@ import {
   CREATE_POST, EDIT_POST, DELETE_POST
 } from '../actionTypes'
 import { thunkCreator } from './utils'
+import { fetchUsersByUsernames } from './users'
 
 export const createPost = (user, post) => {
   const { title, text, category = "random" } = post;
@@ -30,9 +31,26 @@ export const deletePost = id => {
   };
 };
 
+export const fetchPostsAndUsers = () => (dispatch) =>
+  fetchPosts()(dispatch)
+  .then(getUsernamesFromPosts)
+  .then(usernames => fetchUsersByUsernames(usernames)(dispatch))
+  .catch(err =>
+   console.error('could not fetch posts and users:', err.message)
+  )
+
+  //This is an action creator
 export const fetchPosts = () => thunkCreator({
   types: [ FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS, FETCH_POSTS_FAILURE ],
-  promise: fetch('http://localhost:3003/posts')
-             .then(response => response.json())
+  promise: fetch('http://localhost:3003/posts').then(response => response.json())
 })
+
+const getUsernamesFromPosts = (posts) =>
+posts.reduce((usernames, post) => {
+  if (!usernames.includes(post.user)) {
+    return [ ...usernames, post.user ]
+  }
+  console.log(usernames);
+  return usernames
+}, [])
 

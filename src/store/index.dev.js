@@ -1,7 +1,7 @@
 import { createStore, compose } from "redux";
 
 import appReducer from "../reducers";
-import { createUser, createPost, fetchPosts } from "../actions";
+import { createUser, createPost, fetchPosts, fetchPostsAndUsers } from "../actions";
 import middleware from "./middleware";
 
 const enhancer = compose(
@@ -18,11 +18,11 @@ export default function configureStore() {
   );
 
   // create users
-  store.dispatch(createUser("dan", "Daniel Bugl 1"));
-  store.dispatch(createUser("des", "Destiny"));
+  // store.dispatch(createUser("dan", "Daniel Bugl 1"));
+  // store.dispatch(createUser("des", "Destiny"));
 
-  
-  store.dispatch(fetchPosts());
+  store.dispatch(fetchPostsAndUsers())
+  //store.dispatch(fetchPosts());
   // create posts
   // store.dispatch(
   //   createPost("dan", {
